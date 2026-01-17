@@ -1,0 +1,23 @@
+{
+  "name": "finance-core-service-dev",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "forwardPorts": [8080, 5432],
+  "postCreateCommand": "mvn clean install -DskipTests",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "redhat.java",
+        "vmware.vscode-spring-boot",
+        "vmware.vscode-spring-boot-dashboard",
+        "pivotal.vscode-spring-boot",
+        "sonarsource.sonarlint-vscode"
+      ],
+      "settings": {
+        "java.configuration.updateBuildConfiguration": "automatic"
+      }
+    }
+  }
+}
