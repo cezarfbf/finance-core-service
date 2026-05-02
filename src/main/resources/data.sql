@@ -1,4 +1,6 @@
--- Seed data for personal expenses
+-- Seed data for personal expenses (DELETE first so re-runs stay idempotent)
+DELETE FROM personal_expenses;
+
 INSERT INTO personal_expenses (date, category, type, amount, description, created_at) VALUES
 ('2025-12-01', 'house_rental', 'FIXED', 1000.00, 'Monthly rent', NOW()),
 ('2025-12-02', 'internet', 'FIXED', 50.00, 'Internet bill', NOW()),
@@ -30,3 +32,12 @@ INSERT INTO personal_expenses (date, category, type, amount, description, create
 ('2025-10-12', 'gym', 'VARIABLE', 50.00, 'Gym membership', NOW()),
 ('2025-10-18', 'sports', 'VARIABLE', 150.00, 'Marathon registration', NOW()),
 ('2025-10-25', 'care', 'VARIABLE', 45.00, 'Eye exam', NOW());
+
+INSERT INTO personal_expenses (date, category, type, amount, description, created_at) VALUES
+('2026-05-01', 'house_rental', 'FIXED', 1000.00, 'Monthly rent', NOW()),
+('2026-05-02', 'internet', 'FIXED', 50.00, 'Internet bill', NOW()),
+('2026-05-03', 'insurance', 'FIXED', 200.00, 'Health insurance', NOW()),
+('2026-05-05', 'church', 'FIXED', 100.00, 'Church donation', NOW()),
+('2026-05-10', 'loan', 'FIXED', 1150.00, 'Personal loan payment', NOW()),
+('2026-05-02', 'gym', 'VARIABLE', 50.00, 'Gym membership', NOW()),
+('2026-05-08', 'care', 'VARIABLE', 35.00, 'Pharmacy', NOW());
