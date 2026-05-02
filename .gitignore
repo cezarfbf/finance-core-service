@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### H2 Database ###
+*.mv.db
+*.trace.db
+
+### Claude Code ###
+.claude/
