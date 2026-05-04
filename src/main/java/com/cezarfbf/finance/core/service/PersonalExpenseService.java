@@ -36,12 +36,11 @@ public class PersonalExpenseService {
 				BigDecimal.ZERO
 			));
 
-			CategorySummary existing = summaryMap.get(key);
-			summaryMap.put(key, new CategorySummary(
-				existing.category(),
-				existing.type(),
-				existing.amount().add(expense.getAmount())
-			));
+            summaryMap.computeIfPresent(key, (k, existing) -> new CategorySummary(
+                    existing.category(),
+                    existing.type(),
+                    existing.amount().add(expense.getAmount())
+            ));
 		}
 
 		List<CategorySummary> summary = new ArrayList<>(summaryMap.values());
