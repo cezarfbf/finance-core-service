@@ -1,8 +1,6 @@
 spring:
   application:
-    name: FinanceCoreService
-  profiles:
-    active: ${SPRING_PROFILES_ACTIVE:dev}
+    name: finance-core-service
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
