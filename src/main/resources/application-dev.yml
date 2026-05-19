@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: ${SPRING_PROFILES_ACTIVE:dev}
   datasource:
     url: jdbc:postgresql://tramway.proxy.rlwy.net:15283/railway
     password: ${POSTGRES_PASSWORD}
