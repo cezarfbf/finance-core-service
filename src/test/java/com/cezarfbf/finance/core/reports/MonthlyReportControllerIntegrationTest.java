@@ -30,12 +30,12 @@ class MonthlyReportControllerIntegrationTest {
 	@BeforeEach
 	void seed() {
 		repository.deleteAll();
-		save("2025-10-02", "KCSIT SA", "saleOfServices", "4059.00", "Receita");
-		save("2025-10-16", "Cezar Vivid", "taxAndSocialSecurity", "961.40", "IVA Apurado");
-		save("2025-10-16", "Cezar Vivid", "taxAndSocialSecurity", "1012.00", "IVA Apurado");
-		save("2025-10-16", "Cezar Vivid", "taxAndSocialSecurity", "759.00", "IVA Apurado");
-		save("2025-10-30", "Consultoria", "servicesAndSoftware", "1500.00", "Retiradas");
-		save("2025-11-04", "KCSIT SA", "-", "5412.00", "Receita");
+		save("2025-10-02", "KCSIT SA", "4059.00", "Receita");
+		save("2025-10-16", "Cezar Vivid", "961.40", "IVA Apurado");
+		save("2025-10-16", "Cezar Vivid", "1012.00", "IVA Apurado");
+		save("2025-10-16", "Cezar Vivid", "759.00", "IVA Apurado");
+		save("2025-10-30", "Consultoria", "1500.00", "Retiradas");
+		save("2025-11-04", "KCSIT SA", "5412.00", "Receita");
 	}
 
 	@Test
@@ -75,12 +75,10 @@ class MonthlyReportControllerIntegrationTest {
 			.andExpect(jsonPath("$[0].amount").value(5412.00));
 	}
 
-	private void save(String date, String counterparty, String category,
-					  String amount, String classification) {
+	private void save(String date, String counterparty, String amount, String classification) {
 		repository.save(Transaction.builder()
 			.date(LocalDate.parse(date))
 			.counterparty(counterparty)
-			.category(category)
 			.amount(new BigDecimal(amount))
 			.classification(classification)
 			.build());
