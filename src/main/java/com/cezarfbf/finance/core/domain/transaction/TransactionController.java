@@ -3,7 +3,9 @@ package com.cezarfbf.finance.core.domain.transaction;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.LocalDate;
 import java.util.List;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,9 +25,32 @@ public class TransactionController {
     }
 
     @GetMapping
-    @Operation(summary = "List all transactions", description = "All non-deleted transactions ordered by date desc")
-    public ResponseEntity<List<TransactionDto>> getTransactions() {
-        return ResponseEntity.ok(service.findAll());
+    @Operation(
+        summary = "List transactions",
+        description = "All non-deleted transactions ordered by date desc. Optionally filter by context (PERSONAL or BUSINESS)."
+    )
+    public ResponseEntity<List<TransactionDto>> getTransactions(
+        @Parameter(description = "Filter by context: PERSONAL or BUSINESS (omit for all)")
+        @RequestParam(required = false) TransactionContext context
+    ) {
+        return ResponseEntity.ok(service.findAll(context));
+    }
+
+    @GetMapping("/search")
+    @Operation(
+        summary = "Search and filter transactions",
+        description = "Filters by context (required). Optionally narrows by text (description, counterparty, "
+            + "notes, externalReference) and/or an inclusive date range (from/to, ISO yyyy-MM-dd)."
+    )
+    public ResponseEntity<List<TransactionDto>> search(
+        @Parameter(description = "Context: PERSONAL or BUSINESS") @RequestParam TransactionContext context,
+        @Parameter(description = "Free-text query (optional)") @RequestParam(required = false) String q,
+        @Parameter(description = "Start date, inclusive (yyyy-MM-dd, optional)")
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+        @Parameter(description = "End date, inclusive (yyyy-MM-dd, optional)")
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+    ) {
+        return ResponseEntity.ok(service.search(context, q, from, to));
     }
 
     @GetMapping("/{year}/{month}")

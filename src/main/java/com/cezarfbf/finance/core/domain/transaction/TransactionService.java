@@ -2,6 +2,7 @@ package com.cezarfbf.finance.core.domain.transaction;
 
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +16,22 @@ public class TransactionService {
     }
 
     @Transactional(readOnly = true)
-    public List<TransactionDto> findAll() {
-        return repository.findAllByDeletedAtIsNullOrderByDateDesc().stream()
+    public List<TransactionDto> findAll(TransactionContext context) {
+        List<Transaction> transactions = context == null
+            ? repository.findAllByDeletedAtIsNullOrderByDateDesc()
+            : repository.findByContextAndDeletedAtIsNullOrderByDateDesc(context);
+        return transactions.stream()
+            .map(TransactionDto::from)
+            .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<TransactionDto> search(TransactionContext context, String q, LocalDate from, LocalDate to) {
+        // Predicates are built dynamically (see TransactionSpecifications), so optional filters that
+        // are absent never reach the SQL — avoiding PostgreSQL null-parameter type-inference errors.
+        return repository
+            .findAll(TransactionSpecifications.search(context, q, from, to), Sort.by(Sort.Direction.DESC, "date"))
+            .stream()
             .map(TransactionDto::from)
             .toList();
     }
