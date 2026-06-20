@@ -1,5 +1,6 @@
 package com.cezarfbf.finance.core.config;
 
+import com.cezarfbf.finance.core.domain.fixedexpense.FixedExpenseNotFoundException;
 import com.cezarfbf.finance.core.domain.transaction.TransactionNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -28,6 +29,11 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(TransactionNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNotFound(TransactionNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", ex.getMessage()));
+    }
+
+    @ExceptionHandler(FixedExpenseNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFound(FixedExpenseNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", ex.getMessage()));
     }
 
